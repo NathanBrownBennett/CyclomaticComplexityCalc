@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analysis Results</title>
+</head>
+<body>
+    <h2>File Analysis Results</h2>
+    <div>
+        <p>Filename: {{ results.filename }}</p>
+        <p>Number of Lines: {{ results.nloc }}</p>
+        <p>Average Cyclomatic Complexity: {{ results.cyclomatic_complexity }}</p>
+        <p>Function Count: {{ results.function_count }}</p>
+        <p>Lines per Thousand: {{ results.lines_per_thousand }}</p>
+        <img src="{{ results.graph_file_path }}" alt="Cyclomatic Complexity Graph">
+    </div>
+</body>
+</html>
