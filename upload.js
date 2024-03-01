@@ -1,3 +1,4 @@
+const { spawn } = require('child_process');
 document.querySelector('form').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -35,6 +36,19 @@ document.querySelector('form').addEventListener('submit', function(event) {
 });
 
 function calculateCyclomaticComplexity(script) {
-    // TODO: Implement cyclomatic complexity calculation
-    return 0;
+    return new Promise((resolve, reject) => {
+        const python = spawn('python', ['./src/CCCalc.py', script]);
+        let result = '';
+
+        python.stdout.on('data', (data) => {
+            result += data.toString();
+        });
+
+        python.on('close', (code) => {
+            if (code !== 0) {
+                return reject(new Error(`Python script exited with code ${code}`));
+            }
+            resolve(result);
+        });
+    });
 }
