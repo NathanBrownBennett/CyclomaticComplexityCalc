@@ -9,19 +9,6 @@ app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'js', 'java', 'c', 'py'}
 
-render.html("<form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="script" accept=".js">
-        <button type="submit">Upload</button>
-    </form>
-
-    <h2>Analysis Result</h2>
-    <div id="analysisResult"></div>
-
-    <h2>Matlab Graph Preview</h2>
-    <iframe id="matlabPreview" style="width: 100%; height: 500px;"></iframe>
-
-    <script src="static/js/analysis.js"></script>")
-
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def allowed_file(filename):

@@ -3,10 +3,31 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    align-items: center;
+    text-align: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 h1, h2 {
     color: #333;
+    align-items: center;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2em;
+    margin: 20px 0;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin: 10px 0;
 }
 
 form {
@@ -50,11 +71,23 @@ iframe {
     position: fixed;
     top: 0;
     width: 100%;
+    height: 3%;
     display: flex;
     justify-content: space-around;
     background-color: #333;
     color: white;
 }
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    height: 50vh;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
 .card {
     flex: 1 1 0;
     margin: 10px;
@@ -87,3 +120,34 @@ iframe {
 .card-link:hover {
     text-decoration: underline;
 }
+@media screen and (max-width: 1284px) {
+    .cards {
+        flex-direction: column;
+    }
+    .card {
+        margin: 10px auto;
+    }
+}
+
+@media screen and (min-width: 1285px) and (max-width: 800px) {
+    .cards {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .card {
+        flex: 0 0 50%; /* Adjust this value to control the number of cards per row */
+        margin: 10px;
+    }
+}
+
+@media screen and (min-width: 801px) {
+    .cards {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .card {
+        flex: 0 0 25%; /* Adjust this value to control the number of cards per row */
+        margin: 10px;
+    }
+}
+

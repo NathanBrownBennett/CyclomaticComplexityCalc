@@ -2,39 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="{{url_for('static', filename='script.js')}}"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cyclomatic Complexity Script Analysis</title>
 </head>
 <body>
     <div class="navbar">
-        <a href="Index.html">Home</a>
-        <a href="AboutUs.html">About Us</a>
-        <a href="Privacy.html">Privacy</a>
+        <a href="Index">Home</a>
+        <a href="AboutUs">About Us</a>
+        <a href="Privacy">Privacy</a>
     </div>
+
     <h1> Welcome to the CCSA Tool </h1>
     <p> This tool is designed to help you calculate the cyclomatic complexity of your code. </p>
     <p> To use this tool navigate to the Tools site above and click on the Cyclomatic Complexity Calculator. </p>
     <div class="cards">
-        <div class="card" onclick="window.open('#', '_blank')">
-            <img src="path_to_image" alt="CCcalc app image">
-            <div class="card-title">CCcalc app</div>
+        <div class="card" id="CCCalc" onclick="showUploadForm('CCCalc')">
+            <img src="{{url_for('static', filename='CCCalc.webp')}}" alt="CCcalc app image" onclick="showUploadForm('CCCalc')">
+            <div class="card-title" onclick="showUploadForm('CCCalc')">CCcalc app</div>
             <p>CCcalc is a tool that calculates the cyclomatic complexity of your code. Simply upload your code file and the tool will do the rest.</p>
         </div>
-        <div class="card" onclick="window.open('#', '_blank')">
-            <img src="path_to_image" alt="O[N] Calc app image">
-            <div class="card-title">O[N] Calc app</div>
+        <div class="card" id="ONCalc" onclick="showUploadForm('ONCalc')">
+            <img src="{{url_for('static', filename='Line Counter.webp')}}" align="middle" alt="O[N] Calc app image" onclick="showUploadForm('ONCalc')">
+            <div class="card-title" onclick="showUploadForm('ONCalc')">O[N] Calc app</div>
             <p>O[N] Calc is a tool that calculates the time complexity of your code. Upload your code file and the tool will provide an estimate of the time complexity.</p>
         </div>
-        <div class="card" onclick="window.open('#', '_blank')">
-            <img src="path_to_image" alt="Line Counter App image">
-            <div class="card-title">Line Counter App</div>
+        <div class="card" id="LineCounter" onclick="showUploadForm('LineCounter')">
+            <img src="{{url_for('static', filename='O[N].webp')}}" align="middle" alt="Line Counter App image" onclick="showUploadForm('LineCounter')">
+            <div class="card-title" onclick="showUploadForm('LineCounter')">Line Counter App</div>
             <p>Line Counter is a tool that counts the number of lines in your code. Upload your code file and the tool will count the lines for you.</p>
         </div>
-        <div class="card" onclick="window.open('#', '_blank')">
-            <img src="path_to_image" alt="SuperMetric App image">
-            <div class="card-title">SuperMetric App</div>
+        <div class="card" id="SuperMetric" onclick="showUploadForm('SuperMetric')">
+            <img src="{{url_for('static', filename='SuperMetric.webp')}}" align="middle"alt="SuperMetric App image" onclick="showUploadForm('SuperMetric')">
+            <div class="card-title" onclick="showUploadForm('SuperMetric')">SuperMetric App</div>
             <p>SuperMetric is a tool that provides various metrics about your code. Upload your code file and the tool will provide metrics such as cyclomatic complexity, line count, and time complexity.</p>
+        </div>
+    </div>
+
+    <div id="uploadOverlay" class="upload-overlay" style="display:none;">
+        <div id="uploadForm" class="upload-form">
+            <span class="close-button" onclick="closeUploadForm()">&times;</span>
+            <h2>Upload Your Script</h2>
+            <form id="fileUploadForm">
+                <input type="hidden" id="analysisType" name="analysisType">
+                <input type="file" id="fileUpload" name="fileUpload" accept=".py,.js,.java, .c, .cpp,.cs,.txt">
+                <button type="button" onclick="uploadFile()">Upload</button>
+            </form>
+            <div id="progressBar" class="progress-bar">
+                <div id="progressBarFill" class="progress-bar-fill" style="width: 0%;"></div>
+            </div>
+            <iframe id="resultFrame" name="resultFrame" style="display:none;" width="100%" height="200"></iframe>
+            <textarea id="resultText" style="display:none;"></textarea>
         </div>
     </div>
     
