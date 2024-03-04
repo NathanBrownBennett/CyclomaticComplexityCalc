@@ -4,28 +4,40 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const LineCounter = document.getElementById('LineCounter');
     const SuperMetric = document.getElementById('SuperMetric');
     const uploadOverlay = document.getElementById('uploadOverlay');
+    const closeButton = document.querySelector('.close-button');
+    const uploadTitle = document.querySelector('#uploadForm h2');
 
-    const showUploadForm = () => {
+    const closeUploadForm = () => {
+        uploadOverlay.style.display = 'none';
+    };
+
+    closeButton.addEventListener('click', () => {
+        console.log('Close button clicked');
+        closeUploadForm();
+    });
+
+    const showUploadForm = (message) => {
         uploadOverlay.style.display = 'block';
+        uploadTitle.innerHTML = message;
     };
 
     CCCalc.addEventListener('click', () => {
         console.log('CCCalc clicked');
-        showUploadForm();
+        showUploadForm('Upload your script to calculate the cyclomatic complexity');
     });
 
     ONCalc.addEventListener('click', () => {
         console.log('ONCalc clicked');
-        showUploadForm();
+        showUploadForm('Upload your script to calculate the O[N] Complexity');
     });
 
     LineCounter.addEventListener('click', () => {
         console.log('LineCounter clicked');
-        showUploadForm();
+        showUploadForm('Upload your script to calculate the amount of lines it contains');
     });
 
     SuperMetric.addEventListener('click', () => {
         console.log('SuperMetric clicked');
-        showUploadForm();
+        showUploadForm('Upload your script to calculate Cyclomatic Complexity, O[N] and amount of lines in the script.');
     });
 });
