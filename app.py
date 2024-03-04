@@ -1,13 +1,17 @@
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request, redirect, url_for, render_template
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='static', template_folder='templates')
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['ALLOWED_EXTENSIONS'] = {'js'}
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -25,4 +29,5 @@ def upload_file():
         return "File not allowed. Please upload a .js file."
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='127.0.0.1', debug=True)
+    app.run(host='10.0.0.0', debug=True)
