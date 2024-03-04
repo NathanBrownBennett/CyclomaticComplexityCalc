@@ -9,51 +9,69 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const fileUpload = document.getElementById('fileUpload');
     const uploadButton = document.querySelector('#fileUploadForm button');
     const analysisType = document.getElementById('analysisType');
-    const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+    const ip = data.VisitorIP || '?';
+    const resultFrame = document.getElementById('resultFrame');
+    const resultText = document.getElementById('resultText');
 
-    const saveUploadData = (ip, time, location, device, app, fileName) => {
-        const data = {
-            ip,
-            time,
-            location,
-            device,
-            app,
-            fileName
-        };
-        fetch('/SiteUploads.json', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
+    // Display results
+
+    function displayResults(app, outputText) {
+        console.log('Displaying results for', app);
+        resultFrame.style.display = 'block';
+        resultText.style.display = 'block';
+        resultText.value = outputText;
+    }
+
+    const getDeviceInformation = () => {
+        return navigator.userAgent || '?';
     };
 
-    uploadButton.addEventListener('click', () => {
+    const saveUploadData = (fileName, app, device) => {
+        const data = {
+            fileName,
+            app,
+            device
+        };
+
+        // Since we can't use fs and path, we'll use localStorage instead
+        let uploads = JSON.parse(localStorage.getItem('uploads')) || [];
+        uploads.push(data);
+        localStorage.setItem('uploads', JSON.stringify(uploads));
+    };
+
+    uploadButton.addEventListener('click', async () => {
+        console.log('Upload button clicked');
+        const app = analysisType.value;
+        console.log('variable app is made');
         const file = fileUpload.files[0];
-        if (file && file.size <= MAX_FILE_SIZE && ['.py', '.java', '.c', '.cpp', '.cs'].includes(file.name.split('.').pop())) {
-            const formData = new FormData();
-            formData.append('file', file);
-            fetch('/SiteUploads', {
-                method: 'POST',
-                body: formData
-            }).then(response => {
-                if (response.ok) {
-                    // Assuming you have a way to get these values
-                    const ip = 'ip';
-                    const time = new Date().toISOString();
-                    const location = 'location';
-                    const device = 'device';
-                    const app = analysisType.value;
-                    saveUploadData(ip, time, location, device, app, file.name);
-                }
-            });
-        } else {
-            alert('Invalid file. Please select a .py, .java, .c, .cpp, or .cs file that is less than 50MB.');
-        }
+        console.log('variable file is made');
+        const filename = file.name;
+        console.log('variable filename is made');
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            console.log('Displaying results for', app);
+            const outputText = e.target.result;
+            displayResults(app, outputText);
+
+            const deviceInfo = getDeviceInformation();
+            saveUploadData(filename, app, deviceInfo);
+
+            // Since we can't use fs and path, we'll use localStorage instead
+            localStorage.setItem(filename, outputText);
+        };
+        reader.readAsText(file);
     });
+
+    
+    // Close upload form    
     const closeUploadForm = () => {
         uploadOverlay.style.display = 'none';
+        results.style.display = 'none';
+        resultFrame.style.display = 'none';
+        resultText.style.display = 'none';
+        resultText.value ='';
+        fileUpload.value = ''
     };
 
     closeButton.addEventListener('click', () => {
