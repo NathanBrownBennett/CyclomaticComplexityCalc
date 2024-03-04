@@ -4,21 +4,39 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Script Analysis</title>
+    <title>Cyclomatic Complexity Script Analysis</title>
 </head>
 <body>
-    <h1>Upload your script</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="script" accept=".js">
-        <button type="submit">Upload</button>
-    </form>
-
-    <h2>Analysis Result</h2>
-    <div id="analysisResult"></div>
-
-    <h2>Matlab Graph Preview</h2>
-    <iframe id="matlabPreview" style="width: 100%; height: 500px;"></iframe>
-
-    <script src="static/js/analysis.js"></script>
+    <div class="navbar">
+        <a href="Index.html">Home</a>
+        <a href="AboutUs.html">About Us</a>
+        <a href="Privacy.html">Privacy</a>
+    </div>
+    <h1> Welcome to the CCSA Tool </h1>
+    <p> This tool is designed to help you calculate the cyclomatic complexity of your code. </p>
+    <p> To use this tool navigate to the Tools site above and click on the Cyclomatic Complexity Calculator. </p>
+    <div class="cards">
+        <div class="card" onclick="window.open('#', '_blank')">
+            <img src="path_to_image" alt="CCcalc app image">
+            <div class="card-title">CCcalc app</div>
+            <p>CCcalc is a tool that calculates the cyclomatic complexity of your code. Simply upload your code file and the tool will do the rest.</p>
+        </div>
+        <div class="card" onclick="window.open('#', '_blank')">
+            <img src="path_to_image" alt="O[N] Calc app image">
+            <div class="card-title">O[N] Calc app</div>
+            <p>O[N] Calc is a tool that calculates the time complexity of your code. Upload your code file and the tool will provide an estimate of the time complexity.</p>
+        </div>
+        <div class="card" onclick="window.open('#', '_blank')">
+            <img src="path_to_image" alt="Line Counter App image">
+            <div class="card-title">Line Counter App</div>
+            <p>Line Counter is a tool that counts the number of lines in your code. Upload your code file and the tool will count the lines for you.</p>
+        </div>
+        <div class="card" onclick="window.open('#', '_blank')">
+            <img src="path_to_image" alt="SuperMetric App image">
+            <div class="card-title">SuperMetric App</div>
+            <p>SuperMetric is a tool that provides various metrics about your code. Upload your code file and the tool will provide metrics such as cyclomatic complexity, line count, and time complexity.</p>
+        </div>
+    </div>
+    
 </body>
 </html>

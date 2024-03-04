@@ -45,3 +45,45 @@ button:hover {
 iframe {
     border: none;
 }
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    background-color: #333;
+    color: white;
+}
+.card {
+    flex: 1 1 0;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    text-align: center;
+}
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 50px; /* to avoid navbar overlap */
+}
+.card img {
+    width: 100%;
+    height: auto;
+}
+.card-title {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.card-text {
+    font-size: 0.8em;
+}
+.card-link {
+    color: #007BFF;
+    text-decoration: none;
+}
+.card-link:hover {
+    text-decoration: underline;
+}
