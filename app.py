@@ -9,7 +9,7 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
-@app.route('/')
+@app.route('/', methods=["GET", "POST"])
 def index():
     return render_template('index.html')
 
@@ -29,5 +29,4 @@ def upload_file():
         return "File not allowed. Please upload a .js file."
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', debug=True)
-    app.run(host='10.0.0.0', debug=True)
+    app.run(debug=False, host='0.0.0.0', port=8080)
