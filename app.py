@@ -14,13 +14,17 @@ def allowed_file(filename):
 def index():
     return render_template('Index.html')
 
-@app.route('/AboutUs', methods=["GET"])
+@app.route('/AboutUs.html', methods=["GET"])
 def about_us():
     return render_template('AboutUs.html')
 
-@app.route('/Privacy', methods=["GET"])
+@app.route('/Privacy.html', methods=["GET"])
 def privacy():
     return render_template('Privacy.html')
+
+@app.route('/Index.html', methods=["GET"])
+def index_page():
+    return render_template('Index.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
