@@ -18,28 +18,6 @@
     <h1> Welcome to the CCSA Tool </h1>
     <p> This tool is designed to help you calculate the cyclomatic complexity of your code. </p>
     <p> To use this tool navigate to the Tools site above and click on the Cyclomatic Complexity Calculator. </p>
-    <div class="cards">
-        <div class="card" id="CCCalc" onclick="showUploadForm('CCCalc')">
-            <img src="{{url_for('static', filename='CCCalc.webp')}}" alt="CCcalc app image" onclick="showUploadForm('CCCalc')">
-            <div class="card-title" onclick="showUploadForm('CCCalc')">CCcalc app</div>
-            <p>CCcalc is a tool that calculates the cyclomatic complexity of your code. Simply upload your code file and the tool will do the rest.</p>
-        </div>
-        <div class="card" id="ONCalc" onclick="showUploadForm('ONCalc')">
-            <img src="{{url_for('static', filename='Line Counter.webp')}}" align="middle" alt="O[N] Calc app image" onclick="showUploadForm('ONCalc')">
-            <div class="card-title" onclick="showUploadForm('ONCalc')">O[N] Calc app</div>
-            <p>O[N] Calc is a tool that calculates the time complexity of your code. Upload your code file and the tool will provide an estimate of the time complexity.</p>
-        </div>
-        <div class="card" id="LineCounter" onclick="showUploadForm('LineCounter')">
-            <img src="{{url_for('static', filename='O[N].webp')}}" align="middle" alt="Line Counter App image" onclick="showUploadForm('LineCounter')">
-            <div class="card-title" onclick="showUploadForm('LineCounter')">Line Counter App</div>
-            <p>Line Counter is a tool that counts the number of lines in your code. Upload your code file and the tool will count the lines for you.</p>
-        </div>
-        <div class="card" id="SuperMetric" onclick="showUploadForm('SuperMetric')">
-            <img src="{{url_for('static', filename='SuperMetric.webp')}}" align="middle"alt="SuperMetric App image" onclick="showUploadForm('SuperMetric')">
-            <div class="card-title" onclick="showUploadForm('SuperMetric')">SuperMetric App</div>
-            <p>SuperMetric is a tool that provides various metrics about your code. Upload your code file and the tool will provide metrics such as cyclomatic complexity, line count, and time complexity.</p>
-        </div>
-    </div>
 
     <div id="uploadOverlay" class="upload-overlay" style="display:none;">
         <div id="uploadForm" class="upload-form">
@@ -47,7 +25,7 @@
             <h2>Upload Your Script</h2>
             <form id="fileUploadForm">
                 <input type="hidden" id="analysisType" name="analysisType">
-                <input type="file" id="fileUpload" name="fileUpload" accept=".py,.js,.java, .c, .cpp,.cs,.txt">
+                <input type="file" id="fileUpload" name="fileUpload" accept=".py,.java,.c,.cpp,.cs">
                 <button type="button" onclick="uploadFile()">Upload</button>
             </form>
             <div id="progressBar" class="progress-bar">
@@ -55,6 +33,29 @@
             </div>
             <iframe id="resultFrame" name="resultFrame" style="display:none;" width="100%" height="200"></iframe>
             <textarea id="resultText" style="display:none;"></textarea>
+        </div>
+    </div>
+    
+    <div class="cards">
+        <div class="card" id="CCCalc">
+            <img src="{{url_for('static', filename='CCCalc.webp')}}" alt="CCcalc app image">
+            <div class="card-title">CCcalc app</div>
+            <p>CCcalc is a tool that calculates the cyclomatic complexity of your code. Simply upload your code file and the tool will do the rest.</p>
+        </div>
+        <div class="card" id="ONCalc">
+            <img src="{{url_for('static', filename='Line Counter.webp')}}" align="middle" alt="O[N] Calc app image" >
+            <div class="card-title" >O[N] Calc app</div>
+            <p>O[N] Calc is a tool that calculates the time complexity of your code. Upload your code file and the tool will provide an estimate of the time complexity.</p>
+        </div>
+        <div class="card" id="LineCounter" >
+            <img src="{{url_for('static', filename='O[N].webp')}}" align="middle" alt="Line Counter App image" >
+            <div class="card-title" >Line Counter App</div>
+            <p>Line Counter is a tool that counts the number of lines in your code. Upload your code file and the tool will count the lines for you.</p>
+        </div>
+        <div class="card" id="SuperMetric" >
+            <img src="{{url_for('static', filename='SuperMetric.webp')}}" align="middle"alt="SuperMetric App image" >
+            <div class="card-title" >SuperMetric App</div>
+            <p>SuperMetric is a tool that provides various metrics about your code. Upload your code file and the tool will provide metrics such as cyclomatic complexity, line count, and time complexity.</p>
         </div>
     </div>
     

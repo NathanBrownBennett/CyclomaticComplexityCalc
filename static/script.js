@@ -1,45 +1,31 @@
-function uploadFile() {
-    var analysisType = document.getElementById('analysisType').value;
-    var fileInput = document.getElementById('fileUpload');
-    var formData = new FormData();
-    formData.append('fileUpload', fileInput.files[0]);
-    formData.append('analysisType', analysisType);
+document.addEventListener('DOMContentLoaded', (event) => {
+    const CCCalc = document.getElementById('CCCalc');
+    const ONCalc = document.getElementById('ONCalc');
+    const LineCounter = document.getElementById('LineCounter');
+    const SuperMetric = document.getElementById('SuperMetric');
+    const uploadOverlay = document.getElementById('uploadOverlay');
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/upload', true);
-
-    // Update progress bar
-    xhr.upload.onprogress = function(e) {
-        if (e.lengthComputable) {
-            var percentage = (e.loaded / e.total) * 100;
-            updateProgressBar(percentage);
-        }
+    const showUploadForm = () => {
+        uploadOverlay.style.display = 'block';
     };
 
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
-            if(response.error) {
-                showError(response.error);
-            } else {
-                document.getElementById('resultText').style.display = 'block';
-                document.getElementById('resultText').value = `Cyclomatic Complexity: ${response.complexity}`;
-            }
-        } else {
-            showError("Upload failed with status: " + xhr.status);
-        }
-    };
-    xhr.onerror = function() {
-        showError("Upload failed due to a network error.");
-    };
-    xhr.send(formData);
-}
+    CCCalc.addEventListener('click', () => {
+        console.log('CCCalc clicked');
+        showUploadForm();
+    });
 
-function updateProgressBar(percentage) {
-    document.getElementById('progressBarFill').style.width = percentage + '%';
-}
+    ONCalc.addEventListener('click', () => {
+        console.log('ONCalc clicked');
+        showUploadForm();
+    });
 
-function showError(message) {
-    // Assume an errorElement exists or create one to display error messages
-    alert(message); // Simple error handling for demonstration
-}
+    LineCounter.addEventListener('click', () => {
+        console.log('LineCounter clicked');
+        showUploadForm();
+    });
+
+    SuperMetric.addEventListener('click', () => {
+        console.log('SuperMetric clicked');
+        showUploadForm();
+    });
+});
