@@ -20,15 +20,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
     // Display results
 
     function whichapp(app,outputText) {
-        console.log('Analysing' , outputText, 'with', app);
         let analysisResult;
         if (app == 'CCCalc') {
+            console.log('Analysing' , outputText, 'with', app);
             fetch('/src/CCCalc.js')
             .then(response => response.text())
             .then(script => {
+                console.log('Formulating worker for', app);
                 const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
                 worker.onmessage = function(e) {
                     analysisResult = e.data;
+                    console.log(analysisResult);
                     return analysisResult;
                 };
                 worker.postMessage(outputText);
@@ -39,9 +41,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
             fetch('/src/O[N].js')
             .then(response => response.text())
             .then(script => {
+                console.log('Formulating worker for', app);
                 const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
                 worker.onmessage = function(e) {
                     analysisResult = e.data;
+                    console.log(analysisResult);
                     return analysisResult;
                 };
                 worker.postMessage(outputText);
@@ -52,9 +56,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
             fetch('/src/LineCounter.js')
                 .then(response => response.text())
                 .then(script => {
+                    console.log('Formulating worker for', app);
                     const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
                     worker.onmessage = function(e) {
                         analysisResult = e.data;
+                        console.log(analysisResult);
                         return analysisResult;
                     };
                     worker.postMessage(outputText);
@@ -65,9 +71,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
             fetch('/src/SuperMetric.js')
             .then(response => response.text())
             .then(script => {
+                console.log('Formulating worker for', app);
                 const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
                 worker.onmessage = function(e) {
                     analysisResult = e.data;
+                    console.log(analysisResult);
                     return analysisResult;
                 };
                 worker.postMessage(outputText);
@@ -81,14 +89,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
         resultText.style.display = 'block';
         progressBar.style.display = 'block';
         progressBarFill.style.width = '0%';
+        console.log('frame and progress bar are displayed');
         resultText.value = outputText;
         progressBarFill.style.width = '50%';
+        console.log('resultText is displayed');
         appAnalysis = whichapp(app,outputText);
+        console.log('appAnalysis is made');
+        AppResult.style.display = 'block';
+        console.log('AppResult is displayed');
         progressBarFill.style.width = '75%';
         AppResultText.style.display = 'block';
         progressBarFill.style.width = '80%';
         AppResultText.innerHTML = appAnalysis;
+        console.log('AppResultText is displayed');
         progressBarFill.style.width = '100%';
+        console.log('progress bar is filled');
     }
 
     const getDeviceInformation = () => {
