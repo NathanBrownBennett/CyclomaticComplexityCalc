@@ -1,9 +1,3 @@
-self.onmessage = function(event) {
-    const fileContent = event.data;
-    const complexity = calculateCyclomaticComplexity(fileContent);
-    self.postMessage(complexity);
-};
-
 function calculateCyclomaticComplexity(fileContent) {
     // Regular expressions to match different control structures
     const patterns = [
@@ -22,6 +16,11 @@ function calculateCyclomaticComplexity(fileContent) {
         const matches = fileContent.match(pattern);
         complexity += matches ? matches.length : 0;
     });
-
+    
+self.onmessage = function(event) {
+    const fileContent = event.data;
+    const complexity = calculateCyclomaticComplexity(fileContent);
+    self.postMessage(complexity);
+};
     return complexity;
 }

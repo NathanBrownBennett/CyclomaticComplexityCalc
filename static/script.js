@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     // Display results
 
     function whichapp(app,outputText) {
+        console.log('Analysing' , outputText, 'with', app);
         let analysisResult;
         if (app == 'CCCalc') {
             fetch('/src/CCCalc.js')
@@ -34,6 +35,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             });
         }
         else if (app == 'ONCalc') {
+            console.log('Analysing' , outputText, 'with', app);
             fetch('/src/O[N].js')
             .then(response => response.text())
             .then(script => {
@@ -46,6 +48,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             });
         }
         else if (app == 'LineCounter') {
+            console.log('Analysing' , outputText, 'with', app);
             fetch('/src/LineCounter.js')
                 .then(response => response.text())
                 .then(script => {
@@ -58,6 +61,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 });
         }
         else if (app == 'SuperMetric') {
+            console.log('Analysing' , outputText, 'with', app);
             fetch('/src/SuperMetric.js')
             .then(response => response.text())
             .then(script => {
@@ -73,7 +77,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     function displayResults(app, outputText) {
         console.log('Displaying results for', app);
-        results.style.display = 'block';
         resultFrame.style.display = 'block';
         resultText.style.display = 'block';
         progressBar.style.display = 'block';
@@ -84,7 +87,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         progressBarFill.style.width = '75%';
         AppResultText.style.display = 'block';
         progressBarFill.style.width = '80%';
-        AppResultText.value = appAnalysis;
+        AppResultText.innerHTML = appAnalysis;
         progressBarFill.style.width = '100%';
     }
 
@@ -133,7 +136,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     // Close upload form    
     const closeUploadForm = () => {
         uploadOverlay.style.display = 'none';
-        results.style.display = 'none';
         resultFrame.style.display = 'none';
         resultText.style.display = 'none';
         resultText.value ='';
