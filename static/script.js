@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const progressBarFill = document.getElementById('progressBarFill');
     const AppResult = document.getElementById('AppResult');
     const AppResultText = document.getElementById('AppResultText');
+    const app = analysisType.value;
 
     // Display results
 
@@ -29,6 +30,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 console.log('Formulating worker for', app);
                 const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
                 worker.onmessage = function(e) {
+                    console.log('worker is made for', app);
                     analysisResult = e.data;
                     console.log(analysisResult);
                     return analysisResult;
@@ -44,6 +46,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 console.log('Formulating worker for', app);
                 const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
                 worker.onmessage = function(e) {
+                    console.log('worker is made for', app);
                     analysisResult = e.data;
                     console.log(analysisResult);
                     return analysisResult;
@@ -59,6 +62,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     console.log('Formulating worker for', app);
                     const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
                     worker.onmessage = function(e) {
+                        console.log('worker is made for', app);
                         analysisResult = e.data;
                         console.log(analysisResult);
                         return analysisResult;
@@ -74,6 +78,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 console.log('Formulating worker for', app);
                 const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
                 worker.onmessage = function(e) {
+                    console.log('worker is made for', app);
                     analysisResult = e.data;
                     console.log(analysisResult);
                     return analysisResult;
@@ -84,7 +89,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function displayResults(app, outputText) {
-        console.log('Displaying results for', app);
+        console.log('Displaying results for', app, "after displayResults is called");
         resultFrame.style.display = 'block';
         resultText.style.display = 'block';
         progressBar.style.display = 'block';
@@ -109,6 +114,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const getDeviceInformation = () => {
         return navigator.userAgent || '?';
     };
+    console.log('getDeviceInformation is made');
+
+    // Save upload data
 
     const saveUploadData = (fileName, app, device) => {
         const data = {
@@ -116,40 +124,47 @@ document.addEventListener('DOMContentLoaded', (event) => {
             app,
             device
         };
+        console.log('data is made');
 
         // Since we can't use fs and path, we'll use localStorage instead
         let uploads = JSON.parse(localStorage.getItem('uploads')) || [];
+        console.log('uploads is made');
         uploads.push(data);
+        console.log('uploads is pushed');
         localStorage.setItem('uploads', JSON.stringify(uploads));
+        console.log('uploads is saved');
     };
 
     uploadButton.addEventListener('click', async () => {
         console.log('Upload button clicked');
-        const app = analysisType.value;
+        console.log('app clicked is', app);
         console.log('variable app is made');
         const file = fileUpload.files[0];
         console.log('variable file is made');
-        const filename = file.name;
+        const filename = file ? file.name : '';
         console.log('variable filename is made');
 
         const reader = new FileReader();
         reader.onload = function(e) {
-            console.log('Displaying results for', app);
+            console.log('File reader for', app, "after upload button is pressed");
             const outputText = e.target.result;
             displayResults(app, outputText);
-
             const deviceInfo = getDeviceInformation();
+            console.log('deviceInfo is made');
             saveUploadData(filename, app, deviceInfo);
-
+            console.log('called saveUploadData');
             // Since we can't use fs and path, we'll use localStorage instead
             localStorage.setItem(filename, outputText);
+            console.log('called localStorage');
         };
         reader.readAsText(file);
+        console.log('File reader is read');
     });
 
     
     // Close upload form    
     const closeUploadForm = () => {
+        console.log('Close upload form called');
         uploadOverlay.style.display = 'none';
         resultFrame.style.display = 'none';
         resultText.style.display = 'none';
@@ -171,6 +186,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 
     const showUploadForm = (message) => {
+        console.log('Show upload form called');
         uploadOverlay.style.display = 'block';
         uploadTitle.innerHTML = message;
     };
