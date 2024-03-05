@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const uploadTitle = document.querySelector('#uploadForm h2');
     const fileUpload = document.getElementById('fileUpload');
     const uploadButton = document.querySelector('#fileUploadForm button');
-    const analysisType = document.getElementById('analysisType');
+    let app;
     const ip = data.visitor_IP || '?';
     const resultFrame = document.getElementById('resultFrame');
     const resultText = document.getElementById('resultText');
@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const progressBarFill = document.getElementById('progressBarFill');
     const AppResult = document.getElementById('AppResult');
     const AppResultText = document.getElementById('AppResultText');
-    const app = analysisType.value;
 
     // Display results
 
@@ -137,6 +136,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     uploadButton.addEventListener('click', async () => {
         console.log('Upload button clicked');
+        const app = this.id;
         console.log('app clicked is', app);
         console.log('variable app is made');
         const file = fileUpload.files[0];
@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         AppResult.style.display = 'none';
         AppResultText.style.display = 'none';
         AppResultText.value = '';
-        analysisType.value = '';
+        app = '';
         uploadTitle.innerHTML = 'Upload your script';
         console.log('Upload form closed');
     };
@@ -192,22 +192,30 @@ document.addEventListener('DOMContentLoaded', (event) => {
     };
 
     CCCalc.addEventListener('click', () => {
-        console.log('CCCalc clicked');
+        app = this.id;
+        console.log(app, 'clicked');
         showUploadForm('Upload your script to calculate the cyclomatic complexity');
+        return app;
     });
 
     ONCalc.addEventListener('click', () => {
-        console.log('ONCalc clicked');
+        app = this.id;
+        console.log(app, 'clicked');
         showUploadForm('Upload your script to calculate the O[N] Complexity');
+        return app;
     });
 
     LineCounter.addEventListener('click', () => {
-        console.log('LineCounter clicked');
+        app = this.id;
+        console.log(app, 'clicked');
         showUploadForm('Upload your script to calculate the amount of lines it contains');
+        return app;
     });
 
     SuperMetric.addEventListener('click', () => {
-        console.log('SuperMetric clicked');
+        app = this.id;
+        console.log(app, 'clicked');
         showUploadForm('Upload your script to calculate Cyclomatic Complexity, O[N] and amount of lines in the script.');
+        return app;
     });
 });
