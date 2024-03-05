@@ -1,4 +1,8 @@
-const fs = require('fs');
+self.onmessage = function(event) {
+    const fileContent = event.data;
+    const complexity = calculateCyclomaticComplexity(fileContent);
+    self.postMessage(complexity);
+};
 
 function calculateCyclomaticComplexity(fileContent) {
     // Regular expressions to match different control structures
@@ -21,25 +25,3 @@ function calculateCyclomaticComplexity(fileContent) {
 
     return complexity;
 }
-
-function analyzeFile(filePath) {
-    fs.readFile(filePath, 'utf8', (err, data) => {
-        if (err) {
-            console.error(`Error reading file: ${filePath}`);
-            return;
-        }
-        const complexity = calculateCyclomaticComplexity(data);
-        console.log(`Cyclomatic Complexity of ${filePath}: ${complexity}`);
-    });
-}
-
-// Example usage:
-const filePaths = [
-    'path/to/your/file.java',
-    'path/to/your/file.c',
-    'path/to/your/file.cpp',
-    'path/to/your/file.py',
-    'path/to/your/file.cs', // Add paths to your source code files here
-];
-
-filePaths.forEach(analyzeFile);

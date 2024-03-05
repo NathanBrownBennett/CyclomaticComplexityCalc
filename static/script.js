@@ -9,17 +9,83 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const fileUpload = document.getElementById('fileUpload');
     const uploadButton = document.querySelector('#fileUploadForm button');
     const analysisType = document.getElementById('analysisType');
-    const ip = data.VisitorIP || '?';
+    const ip = data.visitor_IP || '?';
     const resultFrame = document.getElementById('resultFrame');
     const resultText = document.getElementById('resultText');
+    const progressBar = document.getElementById('progressBar');
+    const progressBarFill = document.getElementById('progressBarFill');
+    const AppResult = document.getElementById('AppResult');
+    const AppResultText = document.getElementById('AppResultText');
 
     // Display results
 
+    function whichapp(app,outputText) {
+        let analysisResult;
+        if (app == 'CCCalc') {
+            fetch('/src/CCCalc.js')
+            .then(response => response.text())
+            .then(script => {
+                const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
+                worker.onmessage = function(e) {
+                    analysisResult = e.data;
+                    return analysisResult;
+                };
+                worker.postMessage(outputText);
+            });
+        }
+        else if (app == 'ONCalc') {
+            fetch('/src/O[N].js')
+            .then(response => response.text())
+            .then(script => {
+                const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
+                worker.onmessage = function(e) {
+                    analysisResult = e.data;
+                    return analysisResult;
+                };
+                worker.postMessage(outputText);
+            });
+        }
+        else if (app == 'LineCounter') {
+            fetch('/src/LineCounter.js')
+                .then(response => response.text())
+                .then(script => {
+                    const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
+                    worker.onmessage = function(e) {
+                        analysisResult = e.data;
+                        return analysisResult;
+                    };
+                    worker.postMessage(outputText);
+                });
+        }
+        else if (app == 'SuperMetric') {
+            fetch('/src/SuperMetric.js')
+            .then(response => response.text())
+            .then(script => {
+                const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
+                worker.onmessage = function(e) {
+                    analysisResult = e.data;
+                    return analysisResult;
+                };
+                worker.postMessage(outputText);
+            });
+        }
+    }
+
     function displayResults(app, outputText) {
         console.log('Displaying results for', app);
+        results.style.display = 'block';
         resultFrame.style.display = 'block';
         resultText.style.display = 'block';
+        progressBar.style.display = 'block';
+        progressBarFill.style.width = '0%';
         resultText.value = outputText;
+        progressBarFill.style.width = '50%';
+        appAnalysis = whichapp(app,outputText);
+        progressBarFill.style.width = '75%';
+        AppResultText.style.display = 'block';
+        progressBarFill.style.width = '80%';
+        AppResultText.value = appAnalysis;
+        progressBarFill.style.width = '100%';
     }
 
     const getDeviceInformation = () => {
@@ -71,7 +137,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
         resultFrame.style.display = 'none';
         resultText.style.display = 'none';
         resultText.value ='';
-        fileUpload.value = ''
+        fileUpload.value = '';
+        progressBar.style.display = 'none';
+        progressBarFill.style.width = '0%';
+        AppResult.style.display = 'none';
+        AppResultText.style.display = 'none';
+        AppResultText.value = '';
+        analysisType.value = '';
+        uploadTitle.innerHTML = 'Upload your script';
+        console.log('Upload form closed');
     };
 
     closeButton.addEventListener('click', () => {
