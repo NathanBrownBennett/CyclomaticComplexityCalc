@@ -91,43 +91,65 @@ form {
     font-weight: bold;
 }
 
-.close-button:hover,
-.close-button:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+#fileUploadForm label,
+#fileUploadForm input,
+#fileUploadForm button {
+    margin-bottom: 10px;
 }
 
-.progress-bar {
+#progressBar {
     width: 100%;
-    background-color: #f3f3f3;
-    border: 1px solid #bbb;
-    padding: 1px;
-    border-radius: 3px;
-}
-
-.progress-bar-fill {
     height: 20px;
-    background-color: #007BFF;
-    border-radius: 3px;
-    width: 0%;
-    transition: width 0.2s ease;
 }
 
-input[type="file"] {
-    padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+#progressBarFill {
+    height: 100%;
+    background-color: #4caf50;
+    transition: width 0.4s ease-in-out;
 }
 
-button {
-    padding: 10px 20px;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+#resultFrame,
+#resultText,
+#AppResult {
+    margin-top: 70px;
+    display: block;
+}
+
+.app-result-text h2 {
+    margin-bottom: 10px;
+}
+
+.app-result-text p {
+    margin-bottom: 20px;
+}
+
+
+.member-container p {
+    color: #ddd;
+}
+
+/* About Us Section Styles */
+.about-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.about-col {
+    flex: 0 0 30%;
+    margin: 10px;
+}
+
+.about-col img {
+    width: 50%;
+    border-radius: 50%;
+}
+
+.about-info {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 5px;
+    border-radius: 10px;
+    text-align: center;
     transition: background-color 0.3s ease;
 }
 
@@ -168,12 +190,12 @@ button {
     font-size: 1.2em;
     font-weight: bold;
     text-align: center;
-    transition: all 0.3s ease; /* Adding transition effect */
+    transition: all 0.3s ease; 
 }
 
 .navbar a:hover {
     text-decoration: underline;
-    transform: scale(1.1); /* Increase scale on hover */
+    transform: scale(1.1); 
 }
 
 
