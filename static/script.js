@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             let analysisResult;
             if (app == 'CCCalc') {
                 console.log('Analysing' , outputText, 'with', app);
-                fetch('CCCalc.js')
+                fetch('/static/CCCalc.js')
                 .then(response => response.text())
                 .then(script => {
                     console.log('Formulating worker for', app);
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
             else if (app == 'ONCalc') {
                 console.log('Analysing' , outputText, 'with', app);
-                fetch('O[N].js')
+                fetch('/static/BigN.js')
                 .then(response => response.text())
                 .then(script => {
                     console.log('Formulating worker for', app);
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
             else if (app == 'SuperMetric') {
                 console.log('Analysing' , outputText, 'with', app);
-                fetch('SuperMetric.js')
+                fetch('/static/SuperMetric.js')
                 .then(response => response.text())
                 .then(script => {
                     console.log('Formulating worker for', app);
