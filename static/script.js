@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const fileUpload = document.getElementById('fileUpload');
     const uploadButton = document.querySelector('#fileUploadForm button');
     //let app = this.app;
-    const ip = data.visitor_IP || '?';
+    const ip = data.visitor_IP;
     const resultFrame = document.getElementById('resultFrame');
     const resultText = document.getElementById('resultText');
     const progressBar = document.getElementById('progressBar');
@@ -20,42 +20,62 @@ document.addEventListener('DOMContentLoaded', (event) => {
     // Display results
 
     function whichapp(app,outputText) {
-        let analysisResult;
-        if (app == 'CCCalc') {
-            console.log('Analysing' , outputText, 'with', app);
-            fetch('CCCalc.js')
-            .then(response => response.text())
-            .then(script => {
-                console.log('Formulating worker for', app);
-                const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
-                worker.onmessage = function(e) {
-                    console.log('worker is made for', app);
-                    analysisResult = e.data;
-                    console.log(analysisResult);
-                };
-                worker.postMessage(outputText);
-                return analysisResult;
-            });
-        }
-        else if (app == 'ONCalc') {
-            console.log('Analysing' , outputText, 'with', app);
-            fetch('O[N].js')
-            .then(response => response.text())
-            .then(script => {
-                console.log('Formulating worker for', app);
-                const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
-                worker.onmessage = function(e) {
-                    console.log('worker is made for', app);
-                    analysisResult = e.data;
-                    console.log(analysisResult);
-                };
-                worker.postMessage(outputText);
-                return analysisResult;
-            });
-        }
-        else if (app == 'LineCounter') {
-            console.log('Analysing' , outputText, 'with', app);
-            fetch('/static/LineCounter.js')
+        return new Promise((resolve, reject) => {
+            let analysisResult;
+            if (app == 'CCCalc') {
+                console.log('Analysing' , outputText, 'with', app);
+                fetch('CCCalc.js')
+                .then(response => response.text())
+                .then(script => {
+                    console.log('Formulating worker for', app);
+                    const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
+                    worker.onmessage = function(e) {
+                        console.log('worker is made for', app);
+                        analysisResult = e.data;
+                        console.log(analysisResult);
+                        resolve(analysisResult)
+                    };
+                    worker.postMessage(outputText);
+                    
+                });
+            }
+            else if (app == 'ONCalc') {
+                console.log('Analysing' , outputText, 'with', app);
+                fetch('O[N].js')
+                .then(response => response.text())
+                .then(script => {
+                    console.log('Formulating worker for', app);
+                    const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
+                    worker.onmessage = function(e) {
+                        console.log('worker is made for', app);
+                        analysisResult = e.data;
+                        console.log(analysisResult);
+                        resolve(analysisResult)
+                    };
+                    worker.postMessage(outputText);
+                    
+                });
+            }
+            else if (app == 'LineCounter') {
+                console.log('Analysing' , outputText, 'with', app);
+                fetch('/static/LineCounter.js')
+                    .then(response => response.text())
+                    .then(script => {
+                        console.log('Formulating worker for', app);
+                        const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
+                        worker.onmessage = function(e) {
+                            console.log('worker is made for', app);
+                            analysisResult = e.data;
+                            console.log(analysisResult);
+                            resolve(analysisResult)
+                        };
+                        worker.postMessage(outputText);
+                        
+                    });
+            }
+            else if (app == 'SuperMetric') {
+                console.log('Analysing' , outputText, 'with', app);
+                fetch('SuperMetric.js')
                 .then(response => response.text())
                 .then(script => {
                     console.log('Formulating worker for', app);
@@ -66,25 +86,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         console.log(analysisResult);
                     };
                     worker.postMessage(outputText);
-                    return analysisResult;
+                    resolve(analysisResult)
                 });
-        }
-        else if (app == 'SuperMetric') {
-            console.log('Analysing' , outputText, 'with', app);
-            fetch('SuperMetric.js')
-            .then(response => response.text())
-            .then(script => {
-                console.log('Formulating worker for', app);
-                const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
-                worker.onmessage = function(e) {
-                    console.log('worker is made for', app);
-                    analysisResult = e.data;
-                    console.log(analysisResult);
-                };
-                worker.postMessage(outputText);
-                return analysisResult;
-            });
-        }
+            }
+        })
     }
 
     function displayResults(app, outputText) {
@@ -97,19 +102,29 @@ document.addEventListener('DOMContentLoaded', (event) => {
         resultText.value = outputText;
         progressBarFill.style.width = '50%';
         console.log('resultText is displayed');
-        appAnalysis = whichapp(app,outputText);
-        console.log(AppResultText);
-        console.log(appAnalysis);
-        console.log('appAnalysis is made');
-        AppResult.style.display = 'block';
-        console.log('AppResult is displayed');
-        progressBarFill.style.width = '75%';
-        AppResultText.style.display = 'block';
-        progressBarFill.style.width = '80%';
-        AppResultText.innerHTML = appAnalysis;
-        console.log('AppResultText is displayed');
-        progressBarFill.style.width = '100%';
-        console.log('progress bar is filled');
+        //appAnalysis = whichapp(app,outputText);
+        //appAnalysis = null;
+
+        whichapp(app,outputText).then(result => {
+            appAnalysis = result
+            console.log(AppResultText);
+            console.log(appAnalysis);
+            console.log('appAnalysis is made');
+            AppResult.style.display = 'block';
+            console.log('AppResult is displayed');
+            progressBarFill.style.width = '75%';
+            AppResultText.style.display = 'block';
+            progressBarFill.style.width = '80%';
+            AppResultText.innerHTML = appAnalysis;
+            console.log('AppResultText is displayed');
+            progressBarFill.style.width = '100%';
+            console.log('progress bar is filled');
+         })
+         .catch(error => {
+            console.error('Error in analysis:', error);
+         });
+
+
     }
 
     const getDeviceInformation = () => {
@@ -153,7 +168,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             displayResults(app, outputText);
             const deviceInfo = getDeviceInformation();
             console.log('deviceInfo is made');
-            saveUploadData(filename, app, deviceInfo);
+            saveUploadData(filename, this.app, deviceInfo);
             console.log('called saveUploadData');
             // Since we can't use fs and path, we'll use localStorage instead
             localStorage.setItem(filename, outputText);
