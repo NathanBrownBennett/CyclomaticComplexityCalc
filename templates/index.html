@@ -23,27 +23,6 @@
     <p> This tool is designed to help you calculate the cyclomatic complexity of your code. </p>
     <p> To use this tool navigate to the Tools site above and click on the Cyclomatic Complexity Calculator. </p>
 
-    <div id="uploadOverlay" class="upload-overlay" style="display:none;">
-        <div id="uploadForm" class="upload-form">
-            <span class="close-button">&times;</span>
-            <h2>Upload Your Script</h2>
-            <form id="fileUploadForm">
-                <input type="hidden" id="analysisType" name="analysisType">
-                <input type="file" id="fileUpload" name="fileUpload" accept=".py,.java,.c,.cpp,.cs">
-                <button type="button">Upload</button>
-            </form>
-            <div id="progressBar" class="progress-bar">
-                <div id="progressBarFill" class="progress-bar-fill" style="width: 0%;"></div>
-            </div>
-            <iframe id="resultFrame" name="resultFrame" style="display:none;" width="100%" height="200"></iframe>
-            <textarea id="resultText" style="display:none;"></textarea>
-        </div>
-            <div id="AppResult" class="app-result-text" style="display:none;">
-                <label for="AppResultText">App Analysis Result</label>
-                <textarea id="AppResultText" style="display:none;"></textarea>
-            </div>
-    </div>
-
     <div class="cards">
         <div class="card" id="CCCalc">
             <div class="card-container"> <!-- Added class -->
@@ -76,4 +55,28 @@
     </div>
     
 </body>
+
+<div id="uploadOverlay" class="upload-overlay" style="display:none;">
+    <div id="uploadForm" class="upload-form">
+        <span class="close-button">&times;</span>
+        <h2>Upload Your Script</h2>
+        <form id="fileUploadForm">
+            <input type="hidden" id="analysisType" name="analysisType">
+            <input type="file" id="fileUpload" name="fileUpload" accept=".py,.java,.c,.cpp,.cs">
+            <button type="button">Upload</button>
+        </form>
+        <div id="progressBar" class="progress-bar">
+            <div id="progressBarFill" class="progress-bar-fill" style="width: 0%;"></div>
+        </div>
+        <div id="ResultSection" style="display: none;">
+        <iframe id="resultFrame" name="resultFrame" style="display:none;" width="100%" height="200"></iframe>
+        <textarea id="resultText" style="display:none;"></textarea>
+        <div id="AppResult" class="app-result-text" style="display:none;">
+            <label for="AppResultText">App Analysis Result</label>
+            <textarea id="AppResultText" style="display:none;"></textarea>
+        </div>
+    </div>
+</div>
+</div>
+
 </html>

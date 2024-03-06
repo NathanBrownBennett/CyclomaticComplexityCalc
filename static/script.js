@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const uploadButton = document.querySelector('#fileUploadForm button');
     //let app = this.app;
     const ip = data.visitor_IP;
+    const Result = document.getElementById('ResultSection');
     const resultFrame = document.getElementById('resultFrame');
     const resultText = document.getElementById('resultText');
     const progressBar = document.getElementById('progressBar');
@@ -99,6 +100,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         progressBar.style.display = 'block';
         progressBarFill.style.width = '0%';
         console.log('frame and progress bar are displayed');
+        Result.style.display = 'block';
+        console.log('Result Section is displayed');
         resultText.value = outputText;
         progressBarFill.style.width = '50%';
         console.log('resultText is displayed');
