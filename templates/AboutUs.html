@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<html>
 <head>
+    <meta charset="UTF-8">
     <title>About Us</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <link rel="stylesheet" href="../static/style.css">
 </head>
 <body>
 
@@ -13,80 +13,67 @@
         <a href="Privacy.html">Privacy</a>
     </div>
 
-    <div class="container">
+    <div class="about-container"> <!-- Added a container for the about us section -->
         <h1 class="text-center">Our Team</h1>
-        <div class="row">
+        <div class="about-row">
             <!-- Member 1 -->
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://media.licdn.com/dms/image/D4E35AQFpW5wurMw6lQ/profile-framedphoto-shrink_400_400/0/1691515634180?e=1710183600&v=beta&t=NRcAAhRVmnD3s4__Tryk3Op61_jv9bEP9Hs4ykh1LkY" class="card-img-top" alt="Nathan Brown-Bennett">
-                    <div class="card-body">
-                        <h5 class="card-title">Nathan Brown-Bennett</h5>
-                        <p class="card-text">K2110813 - Analyst Designer & Programmer</p>
-                    </div>
+            <div class="about-col">
+                <img src="https://media.licdn.com/dms/image/D4E35AQFpW5wurMw6lQ/profile-framedphoto-shrink_400_400/0/1691515634180?e=1710183600&v=beta&t=NRcAAhRVmnD3s4__Tryk3Op61_jv9bEP9Hs4ykh1LkY" class="about-img" alt="Nathan Brown-Bennett">
+                <div class="about-info">
+                    <h5 class="about-title">Nathan Brown-Bennett</h5>
+                    <p class="about-text">K2110813 - Analyst Designer & Programmer</p>
                 </div>
             </div>
             <!-- Member 2 -->
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://media.licdn.com/dms/image/C4D03AQFnq-Jvp2_UWQ/profile-displayphoto-shrink_400_400/0/1648739787298?e=1715212800&v=beta&t=8Di8FnHRLoR1b441ursTJf3nMSXYq0taQb33WAfe14U" class="card-img-top" alt="Abeera Salik">
-                    <div class="card-body">
-                        <h5 class="card-title">Abeera Salik</h5>
-                        <p class="card-text">K2025560 - Project manager</p>
-                    </div>
+            <div class="about-col">
+                <img src="https://media.licdn.com/dms/image/C4D03AQFnq-Jvp2_UWQ/profile-displayphoto-shrink_400_400/0/1648739787298?e=1715212800&v=beta&t=8Di8FnHRLoR1b441ursTJf3nMSXYq0taQb33WAfe14U" class="about-img" alt="Abeera Salik">
+                <div class="about-info">
+                    <h5 class="about-title">Abeera Salik</h5>
+                    <p class="about-text">K2025560 - Project manager</p>
                 </div>
             </div>
             <!-- Member 3 -->
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://media.licdn.com/dms/image/D4E35AQEr_JbWIIA1iw/profile-framedphoto-shrink_400_400/0/1704460803195?e=1710183600&v=beta&t=xwFKGZNa0btJhdje8tkv9aTtt3xpIAMXStWSWCRW2ew" class="card-img-top" alt="Daniyal Ahmed">
-                    <div class="card-body">
-                        <h5 class="card-title">Daniyal Ahmed</h5>
-                        <p class="card-text">K1920422 - Designer</p>
-                    </div>
+            <div class="about-col">
+                <img src="https://media.licdn.com/dms/image/D4E35AQEr_JbWIIA1iw/profile-framedphoto-shrink_400_400/0/1704460803195?e=1710183600&v=beta&t=xwFKGZNa0btJhdje8tkv9aTtt3xpIAMXStWSWCRW2ew" class="about-img" alt="Daniyal Ahmed">
+                <div class="about-info">
+                    <h5 class="about-title">Daniyal Ahmed</h5>
+                    <p class="about-text">K1920422 - Designer</p>
                 </div>
             </div>
             <!-- Member 4 -->
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://media.licdn.com/dms/image/D4E35AQF0JD_npdZ2Dw/profile-framedphoto-shrink_100_100/0/1687792470839?e=1710183600&v=beta&t=iDnfXJDtPC_f_xV_VZur5WGGFLiA7nqM6osjz-0uxYE" class="card-img-top" alt="Joseph Akiti">
-                    <div class="card-body">
-                        <h5 class="card-title">Joseph Akiti</h5>
-                        <p class="card-text">K2160193 - Security Analyst</p>
-                    </div>
+            <div class="about-col">
+                <img src="https://media.licdn.com/dms/image/D4E35AQF0JD_npdZ2Dw/profile-framedphoto-shrink_100_100/0/1687792470839?e=1710183600&v=beta&t=iDnfXJDtPC_f_xV_VZur5WGGFLiA7nqM6osjz-0uxYE" class="about-img" alt="Joseph Akiti">
+                <div class="about-info">
+                    <h5 class="about-title">Joseph Akiti</h5>
+                    <p class="about-text">K2160193 - Security Analyst</p>
                 </div>
             </div>
             <!-- Member 5 -->
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://media.licdn.com/dms/image/D4E03AQFDrB3Z4zN0qw/profile-displayphoto-shrink_100_100/0/1701308309362?e=1715212800&v=beta&t=yhjAvyHIAbwTelmw8GXKJOAF8qdp5il89i9qa_YJknc" class="card-img-top" alt="Jonel Arapi">
-                    <div class="card-body">
-                        <h5 class="card-title">Jonel Arapi</h5>
-                        <p class="card-text">K2160188 - Web-App UI Developer</p>
-                    </div>
+            <div class="about-col">
+                <img src="https://media.licdn.com/dms/image/D4E03AQFDrB3Z4zN0qw/profile-displayphoto-shrink_100_100/0/1701308309362?e=1715212800&v=beta&t=yhjAvyHIAbwTelmw8GXKJOAF8qdp5il89i9qa_YJknc" class="about-img" alt="Jonel Arapi">
+                <div class="about-info">
+                    <h5 class="about-title">Jonel Arapi</h5>
+                    <p class="about-text">K2160188 - Web-App UI Developer</p>
                 </div>
             </div>
-            <!-- Member 4 -->
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://lh3.googleusercontent.com/proxy/ZoYyBz7TcqNodkC6OViRqoyMvn1t1gx6GQ17_qEMzfghl1aUK5GH2GPK2YFXxGz7Jo1SrNrGrFdsTbfaVntZaf-9VrqajaJX3M6FdJ2RjkVmsXAl9xYPDE26KxWmqLEUqSMxs8xX2NNwpND2CPaRcn4jGA" class="card-img-top" alt="Travis Trzcinski">
-                    <div class="card-body">
-                        <h5 class="card-title">Travis Trzcinski</h5>
-                        <p class="card-text">K2127767 - Backend Developer</p>
-                    </div>
+            <!-- Member 6 -->
+            <div class="about-col">
+                <img src="https://lh3.googleusercontent.com/proxy/ZoYyBz7TcqNodkC6OViRqoyMvn1t1gx6GQ17_qEMzfghl1aUK5GH2GPK2YFXxGz7Jo1SrNrGrFdsTbfaVntZaf-9VrqajaJX3M6FdJ2RjkVmsXAl9xYPDE26KxWmqLEUqSMxs8xX2NNwpND2CPaRcn4jGA" class="about-img" alt="Travis Trzcinski">
+                <div class="about-info">
+                    <h5 class="about-title">Travis Trzcinski</h5>
+                    <p class="about-text">K2127767 - Backend Developer</p>
                 </div>
             </div>
-            <!-- Member 5 -->
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://lh3.googleusercontent.com/proxy/ZoYyBz7TcqNodkC6OViRqoyMvn1t1gx6GQ17_qEMzfghl1aUK5GH2GPK2YFXxGz7Jo1SrNrGrFdsTbfaVntZaf-9VrqajaJX3M6FdJ2RjkVmsXAl9xYPDE26KxWmqLEUqSMxs8xX2NNwpND2CPaRcn4jGA" class="card-img-top" alt="Bilal Toumi">
-                    <div class="card-body">
-                        <h5 class="card-title">Bilal Toumi</h5>
-                        <p class="card-text">K1553978 - Analyst Designer</p>
-                    </div>
+            <!-- Member 7 -->
+            <div class="about-col">
+                <img src="https://lh3.googleusercontent.com/proxy/ZoYyBz7TcqNodkC6OViRqoyMvn1t1gx6GQ17_qEMzfghl1aUK5GH2GPK2YFXxGz7Jo1SrNrGrFdsTbfaVntZaf-9VrqajaJX3M6FdJ2RjkVmsXAl9xYPDE26KxWmqLEUqSMxs8xX2NNwpND2CPaRcn4jGA" class="about-img" alt="Bilal Toumi">
+                <div class="about-info">
+                    <h5 class="about-title">Bilal Toumi</h5>
+                    <p class="about-text">K1553978 - Analyst Designer</p>
                 </div>
             </div>
         </div>
     </div>
+
 </body>
 </html>
