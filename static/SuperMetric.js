@@ -1,9 +1,9 @@
 // SuperMetric.js
 
 // Assuming the presence of Web Worker scripts for O[N] complexity, line count, and cyclomatic complexity calculations
-const onWorker = new Worker('src/O[N].js');
-const lineCountWorker = new Worker('src/LineCounter.js');
-const ccWorker = new Worker('src/CCCalc.js');
+const onWorker = new Worker('BigN.js');
+const lineCountWorker = new Worker('/static/LineCounter.js');
+const ccWorker = new Worker('CCCalc.js');
 
 function calculateSuperMetrics(fileContent) {
   return new Promise((resolve) => {

@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const uploadTitle = document.querySelector('#uploadForm h2');
     const fileUpload = document.getElementById('fileUpload');
     const uploadButton = document.querySelector('#fileUploadForm button');
-    let app;
-    const ip = data.visitor_IP || '?';
+    //let app = this.app;
+    const ip = data.visitor_IP;
     const resultFrame = document.getElementById('resultFrame');
     const resultText = document.getElementById('resultText');
     const progressBar = document.getElementById('progressBar');
@@ -20,42 +20,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
     // Display results
 
     function whichapp(app,outputText) {
-        let analysisResult;
-        if (app == 'CCCalc') {
-            console.log('Analysing' , outputText, 'with', app);
-            fetch('/src/CCCalc.js')
-            .then(response => response.text())
-            .then(script => {
-                console.log('Formulating worker for', app);
-                const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
-                worker.onmessage = function(e) {
-                    console.log('worker is made for', app);
-                    analysisResult = e.data;
-                    console.log(analysisResult);
-                    return analysisResult;
-                };
-                worker.postMessage(outputText);
-            });
-        }
-        else if (app == 'ONCalc') {
-            console.log('Analysing' , outputText, 'with', app);
-            fetch('/src/O[N].js')
-            .then(response => response.text())
-            .then(script => {
-                console.log('Formulating worker for', app);
-                const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
-                worker.onmessage = function(e) {
-                    console.log('worker is made for', app);
-                    analysisResult = e.data;
-                    console.log(analysisResult);
-                    return analysisResult;
-                };
-                worker.postMessage(outputText);
-            });
-        }
-        else if (app == 'LineCounter') {
-            console.log('Analysing' , outputText, 'with', app);
-            fetch('/src/LineCounter.js')
+        return new Promise((resolve, reject) => {
+            let analysisResult;
+            if (app == 'CCCalc') {
+                console.log('Analysing' , outputText, 'with', app);
+                fetch('CCCalc.js')
                 .then(response => response.text())
                 .then(script => {
                     console.log('Formulating worker for', app);
@@ -64,31 +33,67 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         console.log('worker is made for', app);
                         analysisResult = e.data;
                         console.log(analysisResult);
-                        return analysisResult;
+                        resolve(analysisResult)
                     };
                     worker.postMessage(outputText);
+                    
                 });
-        }
-        else if (app == 'SuperMetric') {
-            console.log('Analysing' , outputText, 'with', app);
-            fetch('/src/SuperMetric.js')
-            .then(response => response.text())
-            .then(script => {
-                console.log('Formulating worker for', app);
-                const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
-                worker.onmessage = function(e) {
-                    console.log('worker is made for', app);
-                    analysisResult = e.data;
-                    console.log(analysisResult);
-                    return analysisResult;
-                };
-                worker.postMessage(outputText);
-            });
-        }
+            }
+            else if (app == 'ONCalc') {
+                console.log('Analysing' , outputText, 'with', app);
+                fetch('O[N].js')
+                .then(response => response.text())
+                .then(script => {
+                    console.log('Formulating worker for', app);
+                    const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
+                    worker.onmessage = function(e) {
+                        console.log('worker is made for', app);
+                        analysisResult = e.data;
+                        console.log(analysisResult);
+                        resolve(analysisResult)
+                    };
+                    worker.postMessage(outputText);
+                    
+                });
+            }
+            else if (app == 'LineCounter') {
+                console.log('Analysing' , outputText, 'with', app);
+                fetch('/static/LineCounter.js')
+                    .then(response => response.text())
+                    .then(script => {
+                        console.log('Formulating worker for', app);
+                        const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
+                        worker.onmessage = function(e) {
+                            console.log('worker is made for', app);
+                            analysisResult = e.data;
+                            console.log(analysisResult);
+                            resolve(analysisResult)
+                        };
+                        worker.postMessage(outputText);
+                        
+                    });
+            }
+            else if (app == 'SuperMetric') {
+                console.log('Analysing' , outputText, 'with', app);
+                fetch('SuperMetric.js')
+                .then(response => response.text())
+                .then(script => {
+                    console.log('Formulating worker for', app);
+                    const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
+                    worker.onmessage = function(e) {
+                        console.log('worker is made for', app);
+                        analysisResult = e.data;
+                        console.log(analysisResult);
+                    };
+                    worker.postMessage(outputText);
+                    resolve(analysisResult)
+                });
+            }
+        })
     }
 
     function displayResults(app, outputText) {
-        console.log('Displaying results for', app, "after displayResults is called");
+        console.log('Starting displayResults for', app);
         resultFrame.style.display = 'block';
         resultText.style.display = 'block';
         progressBar.style.display = 'block';
@@ -97,17 +102,29 @@ document.addEventListener('DOMContentLoaded', (event) => {
         resultText.value = outputText;
         progressBarFill.style.width = '50%';
         console.log('resultText is displayed');
-        appAnalysis = whichapp(app,outputText);
-        console.log('appAnalysis is made');
-        AppResult.style.display = 'block';
-        console.log('AppResult is displayed');
-        progressBarFill.style.width = '75%';
-        AppResultText.style.display = 'block';
-        progressBarFill.style.width = '80%';
-        AppResultText.innerHTML = appAnalysis;
-        console.log('AppResultText is displayed');
-        progressBarFill.style.width = '100%';
-        console.log('progress bar is filled');
+        //appAnalysis = whichapp(app,outputText);
+        //appAnalysis = null;
+
+        whichapp(app,outputText).then(result => {
+            appAnalysis = result
+            console.log(AppResultText);
+            console.log(appAnalysis);
+            console.log('appAnalysis is made');
+            AppResult.style.display = 'block';
+            console.log('AppResult is displayed');
+            progressBarFill.style.width = '75%';
+            AppResultText.style.display = 'block';
+            progressBarFill.style.width = '80%';
+            AppResultText.innerHTML = appAnalysis;
+            console.log('AppResultText is displayed');
+            progressBarFill.style.width = '100%';
+            console.log('progress bar is filled');
+         })
+         .catch(error => {
+            console.error('Error in analysis:', error);
+         });
+
+
     }
 
     const getDeviceInformation = () => {
@@ -136,7 +153,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     uploadButton.addEventListener('click', async () => {
         console.log('Upload button clicked');
-        const app = this.id;
+        const app = this.app;
         console.log('app clicked is', app);
         console.log('variable app is made');
         const file = fileUpload.files[0];
@@ -151,7 +168,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             displayResults(app, outputText);
             const deviceInfo = getDeviceInformation();
             console.log('deviceInfo is made');
-            saveUploadData(filename, app, deviceInfo);
+            saveUploadData(filename, this.app, deviceInfo);
             console.log('called saveUploadData');
             // Since we can't use fs and path, we'll use localStorage instead
             localStorage.setItem(filename, outputText);
@@ -192,30 +209,29 @@ document.addEventListener('DOMContentLoaded', (event) => {
     };
 
     CCCalc.addEventListener('click', () => {
-        app = this.id;
+        this.app = "CCCalc";
         console.log(app, 'clicked');
         showUploadForm('Upload your script to calculate the cyclomatic complexity');
-        return app;
     });
 
     ONCalc.addEventListener('click', () => {
-        app = this.id;
+        this.app = "ONCalc";
         console.log(app, 'clicked');
         showUploadForm('Upload your script to calculate the O[N] Complexity');
-        return app;
+        
     });
 
     LineCounter.addEventListener('click', () => {
-        app = this.id;
+        this.app = "LineCounter";
         console.log(app, 'clicked');
         showUploadForm('Upload your script to calculate the amount of lines it contains');
-        return app;
+        
     });
 
     SuperMetric.addEventListener('click', () => {
-        app = this.id;
+        this.app = "SuperMetric";
         console.log(app, 'clicked');
         showUploadForm('Upload your script to calculate Cyclomatic Complexity, O[N] and amount of lines in the script.');
-        return app;
+        
     });
 });

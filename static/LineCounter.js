@@ -9,4 +9,3 @@ self.onmessage = function(event) {
     const LineCount = countLines(fileContent);
     self.postMessage(LineCount);
 };
-    return LineCount;
