@@ -16,7 +16,7 @@ class File:
             return [False, "File name could not be validated - Does not contain '.' or is less than 3 characters."]
         
         if not self.validate_extension():
-            return [False, "File extension is not authorised - Must be one of the following (" + self.extensions.join(", ") + ")"]
+            return [False, "File extension is not authorised - Must be one of the following (" + ", ".join(self.extensions) + ")"]
         
         if not self.validate_integrity():
             return [False, "File could not be verified - Please try again."]
