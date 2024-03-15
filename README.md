@@ -19,6 +19,8 @@ To set up the CyclomaticComplexityCalc application locally, follow these steps:
 2. Clone the repository to your local machine.
 3. Navigate to the project directory and install the required dependencies:
 
+After moving into the directory of the downloaded project, follow the following steps:
+
 '''
 pip install -r requirements.txt
 '''
