@@ -1,31 +1,31 @@
 # Hey dudes - Travis
 
 from flask import Flask, request, redirect, url_for, render_template
-import os
 from werkzeug.utils import secure_filename
+
+from modules.security import File as FileSecurity # All Security Related Functionality
+
+import os
+
 
 app = Flask(__name__, static_url_path='/static', static_folder='static', template_folder='templates')
 app.config['UPLOAD_FOLDER'] = './SiteUploads'
 app.config['ALLOWED_EXTENSIONS'] = {'.py', '.java', '.c', '.cpp', '.cs', '.js'}
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
-
 @app.route('/SiteUploads', methods=['POST'])
-def upload_file():
+def upload_file(request):
     if 'file' not in request.files:
         return redirect(request.url)
+
     file = request.files['file']
-    if file.filename == '':
-        return "No File Selected",400
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        return "Success",200
-    else:
-        return "Invalid File",400
+    fileResponse = FileSecurity(request.files['file'])
+    fileChecked = fileResponse.validate_file()
 
-
+    if fileChecked[0]:
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+        return "Success", 200
+    
+    return fileChecked[1], 400
 
 @app.route('/', methods=["GET", "POST"])
 def index():
