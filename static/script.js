@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', (event) => {
+    // Core
+
     const CCCalc = document.getElementById('CCCalc');
     const ONCalc = document.getElementById('ONCalc');
     const LineCounter = document.getElementById('LineCounter');
@@ -8,94 +10,101 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const uploadTitle = document.querySelector('#uploadForm h2');
     const fileUpload = document.getElementById('fileUpload');
     const uploadButton = document.querySelector('#fileUploadForm button');
-    //let app = this.app;
     const ip = data.visitor_IP;
     const Result = document.getElementById('ResultSection');
-    const resultFrame = document.getElementById('resultFrame');
+    //const resultFrame = document.getElementById('');
     const resultText = document.getElementById('resultText');
     const progressBar = document.getElementById('progressBar');
     const progressBarFill = document.getElementById('progressBarFill');
-    const AppResult = document.getElementById('AppResult');
+    //const AppResult = document.getElementById('AppResult');
     const AppResultText = document.getElementById('AppResultText');
 
-    // Display results
+    // Get all file select dropdowns
+    const fileSelects = document.querySelectorAll('.file-select');
 
-    function whichapp(app,outputText) {
+    // Add event listener to each file select dropdown
+    fileSelects.forEach(function(fileSelect) {
+        fileSelect.addEventListener('change', function() {
+            // Get the selected file ID
+            var fileId = this.value;
+
+            // TODO: Use the file ID to load the file into the tool
+        });
+    });
+
+    function toggleChat() {
+        var chatContainer = document.getElementById('chat-container');
+        var chatToggle = document.getElementById('chat-toggle');
+        if (chatContainer.style.display === 'none') {
+            chatContainer.style.display = 'block';
+            chatToggle.style.display = 'none';
+        } else {
+            chatContainer.style.display = 'none';
+            chatToggle.style.display = 'flex';
+        }
+    }
+    
+    function createWorker(app, scriptPath, outputText) {
         return new Promise((resolve, reject) => {
-            let analysisResult;
-            if (app == 'CCCalc') {
-                console.log('Analysing' , outputText, 'with', app);
-                fetch('/static/CCCalc.js')
+            fetch(scriptPath)
                 .then(response => response.text())
                 .then(script => {
-                    console.log('Formulating worker for', app);
                     const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
                     worker.onmessage = function(e) {
-                        console.log('worker is made for', app);
-                        analysisResult = e.data;
-                        console.log(analysisResult);
-                        resolve(analysisResult)
+                        const analysisResult = e.data;
+                        // Update the AppResultText textarea with the analysis result
+                        AppResultText.value = analysisResult;
+                        // Make the AppResultText textarea visible
+                        AppResultText.style.display = 'block';
+                        resolve(analysisResult);
                     };
                     worker.postMessage(outputText);
-                    
-                });
-            }
-            else if (app == 'ONCalc') {
+                })
+                .catch(reject);
+        });
+    }
+
+    // Display results
+    
+    function whichapp(app, outputText) {
+        console.log('Analysing', outputText, 'with', app);
+        switch (app) {
+            case 'CCCalc':
+                return createWorker(app, '/static/CCCalc.js', outputText);
+            case 'ONCalc':
+                return createWorker(app, '/static/BigN.js', outputText);
+            case 'LineCounter':
+                return createWorker(app, '/static/LineCounter.js', outputText);
+            case 'SuperMetric':
                 console.log('Analysing' , outputText, 'with', app);
-                fetch('/static/BigN.js')
-                .then(response => response.text())
-                .then(script => {
-                    console.log('Formulating worker for', app);
-                    const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
-                    worker.onmessage = function(e) {
-                        console.log('worker is made for', app);
-                        analysisResult = e.data;
-                        console.log(analysisResult);
-                        resolve(analysisResult)
-                    };
-                    worker.postMessage(outputText);
-                    
+                // Return a new Promise
+                return new Promise((resolve, reject) => {
+                    // Run all three workers in parallel and wait for all of them to finish
+                    Promise.all([
+                        createWorker('CCCalc', '/static/CCCalc.js', outputText),
+                        createWorker('ONCalc', '/static/BigN.js', outputText),
+                        createWorker('LineCounter', '/static/LineCounter.js', outputText)
+                    ]).then(([ccCalcResult, onCalcResult, lineCounterResult]) => {
+                        // Combine the results into the SuperMetric
+                        const superMetric = `CCCalc: ${ccCalcResult}\nONCalc: ${onCalcResult}\nLineCounter: ${lineCounterResult}`;
+                        // Update the AppResultText textarea with the SuperMetric
+                        AppResultText.value = superMetric;
+                        // Make the AppResultText textarea visible
+                        AppResultText.style.display = 'block';
+                        // Resolve the Promise with the SuperMetric
+                        resolve(superMetric);
+                    }).catch(reject);  // Reject the Promise if there's an error
                 });
-            }
-            else if (app == 'LineCounter') {
-                console.log('Analysing' , outputText, 'with', app);
-                fetch('/static/LineCounter.js')
-                    .then(response => response.text())
-                    .then(script => {
-                        console.log('Formulating worker for', app);
-                        const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
-                        worker.onmessage = function(e) {
-                            console.log('worker is made for', app);
-                            analysisResult = e.data;
-                            console.log(analysisResult);
-                            resolve(analysisResult)
-                        };
-                        worker.postMessage(outputText);
-                        
-                    });
-            }
-            else if (app == 'SuperMetric') {
-                console.log('Analysing' , outputText, 'with', app);
-                fetch('/static/SuperMetric.js')
-                .then(response => response.text())
-                .then(script => {
-                    console.log('Formulating worker for', app);
-                    const worker = new Worker(URL.createObjectURL(new Blob([script], {type: 'text/javascript'})));
-                    worker.onmessage = function(e) {
-                        console.log('worker is made for', app);
-                        analysisResult = e.data;
-                        console.log(analysisResult);
-                    };
-                    worker.postMessage(outputText);
-                    resolve(analysisResult)
-                });
-            }
-        })
+
+                break;
+            default:
+                return Promise.reject('Invalid app');
+        }
     }
 
     function displayResults(app, outputText) {
         console.log('Starting displayResults for', app);
-        resultFrame.style.display = 'block';
+        //resultFrame.style.display = 'block';
         resultText.style.display = 'block';
         progressBar.style.display = 'block';
         progressBarFill.style.width = '0%';
@@ -113,7 +122,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             console.log(AppResultText);
             console.log(appAnalysis);
             console.log('appAnalysis is made');
-            AppResult.style.display = 'block';
+            //AppResult.style.display = 'block';
             console.log('AppResult is displayed');
             progressBarFill.style.width = '75%';
             AppResultText.style.display = 'block';
@@ -159,11 +168,33 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const app = this.app;
         console.log('app clicked is', app);
         console.log('variable app is made');
-        const file = fileUpload.files[0];
+    
+        // Get the selected option element
+        var option = document.getElementById('fileSelect').selectedOptions[0];
+    
+        let file;
+        let filename;
+    
+        // If a file is selected in the dropdown menu, use it
+        if (option) {
+            filename = option.value;
+            // Get the source of the file from the data-source attribute
+            file = option.getAttribute('data-source');
+    
+            // Remove the leading "b'" and trailing "'"
+            file = file.substring(2, file.length - 1);
+    
+            // Replace "\\r\\n" with "\n" to convert to genuine new lines
+            file = file.replace(/\\r\\n/g, "\n");
+        }
+        // Otherwise, try to upload a new file
+        else {
+            file = fileUpload.files[0];
+            filename = file ? file.name : '';
+        }
+    
         console.log('variable file is made');
-        const filename = file ? file.name : '';
-        console.log('variable filename is made');
-
+    
         const reader = new FileReader();
         reader.onload = function(e) {
             console.log('File reader for', app, "after upload button is pressed");
@@ -177,22 +208,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
             localStorage.setItem(filename, outputText);
             console.log('called localStorage');
         };
-        reader.readAsText(file);
+        reader.readAsText(new Blob([file]));
         console.log('File reader is read');
     });
-
     
     // Close upload form    
     const closeUploadForm = () => {
         console.log('Close upload form called');
         uploadOverlay.style.display = 'none';
-        resultFrame.style.display = 'none';
+        //resultFrame.style.display = 'none';
         resultText.style.display = 'none';
         resultText.value ='';
         fileUpload.value = '';
         progressBar.style.display = 'none';
         progressBarFill.style.width = '0%';
-        AppResult.style.display = 'none';
+        //AppResult.style.display = 'none';
         AppResultText.style.display = 'none';
         AppResultText.value = '';
         app = '';

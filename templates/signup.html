@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="../static/style.css"> 
+    <style>
+        .error-message {
+            color: red;
+            background-color: #fdd;
+            border: 1px solid red;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+        var verifyCallback = function(response) {
+            // reCAPTCHA verified - enable the submit button
+            document.getElementById('signup-button').disabled = false;
+        };
+
+        var onloadCallback = function() {
+            grecaptcha.render('recaptcha-container', {
+                'sitekey' : '6LeATaIpAAAAAEEiO5Vn9PX15l_VCypHOjLo2F0c',
+                'callback' : verifyCallback,
+                'theme' : 'light'
+            });
+        };
+        
+        window.addEventListener('DOMContentLoaded', (event) => {
+            document.getElementById('signup-form').addEventListener('submit', function(evt) {
+                evt.preventDefault();
+                let formData = new FormData(this);
+                let jsonObject = {};
+                for (const [key, value]  of formData.entries()) {
+                    jsonObject[key] = value;
+                }
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", "/api/signup");
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        document.open();
+                        document.write(xhr.response);
+                        document.close();
+                    }
+                };
+                xhr.send(JSON.stringify(jsonObject));
+            });
+        });
+
+    </script>
+</head>
+<body onload="onloadCallback()">
+    <div class="navbar">
+        <a href="Index">Home</a>
+        <a href="login">Login</a> 
+    </div>
+
+    <div class="login-container">
+        <h1>Sign Up</h1>
+
+        <!-- The action attribute points to the server endpoint for signup -->
+        <form id="signup-form" action="/api/signup" method="POST">  
+            <div class="input-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <!-- Error message placeholder -->
+                {% if error %}
+                <div class="error-message">{{ error }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Captcha widget -->
+            <div id="recaptcha-container"></div> 
+
+            <button type="submit" id="signup-button" disabled>Sign Up</button>
+        </form>
+
+        <p>Already have an account? <a href="login">Login</a></p> 
+    </div>
+</body>
+</html>
