@@ -28,27 +28,55 @@
             });
         };
         
-        window.addEventListener('DOMContentLoaded', (event) => {
-            document.getElementById('signup-form').addEventListener('submit', function(evt) {
-                evt.preventDefault();
-                let formData = new FormData(this);
-                let jsonObject = {};
-                for (const [key, value]  of formData.entries()) {
-                    jsonObject[key] = value;
+        function validatePassword(password) {
+        // Check length
+        if (password.length < 8 || password.length > 64) {
+            return "Password must be between 8 and 64 characters.";
+        }
+
+        // Check against prohibited password dictionary
+        var prohibitedPasswords = ["password", "12345678", "qwerty"];  // Add more prohibited passwords here
+        if (prohibitedPasswords.includes(password)) {
+            return "Password is too common.";
+        }
+
+        // If the password passed all checks, return null (no error)
+        return null;
+    }
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+        document.getElementById('signup-form').addEventListener('submit', function(evt) {
+            evt.preventDefault();
+            let formData = new FormData(this);
+            let jsonObject = {};
+            for (const [key, value]  of formData.entries()) {
+                jsonObject[key] = value;
+            }
+
+            // Validate the password
+            var passwordError = validatePassword(jsonObject["password"]);
+            if (passwordError) {
+                // If the password is invalid, display the error and stop the form submission
+                document.getElementById('password-error').textContent = passwordError;
+                return;
+            }
+
+            // If the password is valid, continue with the form submission
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "/api/signup");
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    document.open();
+                    document.write(xhr.response);
+                    document.close();
                 }
-                let xhr = new XMLHttpRequest();
-                xhr.open("POST", "/api/signup");
-                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                xhr.onload = function () {
-                    if (xhr.status === 200) {
-                        document.open();
-                        document.write(xhr.response);
-                        document.close();
-                    }
-                };
-                xhr.send(JSON.stringify(jsonObject));
-            });
+            };
+            xhr.send(JSON.stringify(jsonObject));
         });
+    });
+
+
 
     </script>
 </head>
@@ -71,10 +99,7 @@
             <div class="input-group">
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
-                <!-- Error message placeholder -->
-                {% if error %}
-                <div class="error-message">{{ error }}</div>
-                {% endif %}
+                <div id="password-error" class="error-message"></div>
             </div>
 
             <!-- Captcha widget -->

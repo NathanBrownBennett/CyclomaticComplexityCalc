@@ -5,6 +5,7 @@ import qrcode
 from io import BytesIO
 import base64
 import secrets
+import bcrypt
 
 # Initialize the database connection
 conn = sqlite3.connect('users.db', check_same_thread=False)
@@ -62,9 +63,14 @@ def check_username_exists(username):
 
 # Function to create user
 def create_user(username, password):
+
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
     totp_secret = pyotp.random_base32()
-    cursor.execute('INSERT INTO users (username, password, totp_secret) VALUES (?, ?, ?)', (username, password, totp_secret))
+
+    cursor.execute('INSERT INTO users (username, password, totp_secret) VALUES (?, ?, ?)', (username, hashed_password, totp_secret))
     conn.commit()
+
     return totp_secret
 
 # Function to get TOTP URI
@@ -113,8 +119,7 @@ def validate_password(username, password):
     result = conn.execute(query, (str(username),))
     stored_password = result.fetchone()[0]
 
-    # Check if the entered password matches the stored password
-    if password == stored_password:
+    if bcrypt.checkpw(password.encode('utf-8'), stored_password):
         return True
     else:
         return False

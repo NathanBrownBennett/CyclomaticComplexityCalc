@@ -9,7 +9,7 @@ class Chatbot:
         load_dotenv()
 
         self.model_name = model_name
-        #self.api_key = os.getenv('OPENAI_API_KEY')
+        self.api_key = os.getenv('OPENAI_API_KEY')
         openai.api_key = self.api_key
 
         self.site_context = """
@@ -53,7 +53,7 @@ class Chatbot:
         response = openai.ChatCompletion.create(
             model=self.model_name,
             messages=[
-                {"role": "system", "content": "You are a helpful assistant for the CCSA Tool."},
+                {"role": "system", "content": "You are a helpful assistant for the CCSA Tool, you will reply with brief responses."},
                 {"role": "user", "content": prompt},
             ]
         )

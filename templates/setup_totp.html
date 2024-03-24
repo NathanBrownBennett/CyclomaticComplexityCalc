@@ -9,7 +9,9 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                height: 200px; /* Adjust as needed */
+                height: 200px;
+                width: 100%;
+                background: transparent;
             }
             .qr-code-placeholder img {
                 max-width: 100%;
@@ -177,7 +179,7 @@
             <div class="setup-section">
                 <h2>Manual Setup</h2>
                 <p>If you can't scan the QR code, enter this key manually into your 2FA app:</p>
-                <div class="manual-key-placeholder"><strong>{{ totp_uri.split('=')[1].split('&')[0] }}</strong></div>
+                <strong>{{ totp_uri.split('=')[1].split('&')[0] }}</strong>
             </div>
 
             <button id="done-button">I'm Done Setting Up</button>
