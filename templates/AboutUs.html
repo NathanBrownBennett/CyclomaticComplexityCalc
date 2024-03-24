@@ -6,11 +6,39 @@
     <link rel="stylesheet" href="../static/style.css">
 </head>
 <body>
+    <div id="chat-toggle" style="position: fixed; bottom: 20px; right: 20px; display: flex; align-items: center; border-radius: 25px; background-color: #4CAF50; padding: 10px; cursor: pointer;" onclick="toggleChat()">
+        <span style="margin-right: 10px; color: white; font-size: 16px;">Looking for assistance?</span>
+        <div id="toggle-chat-button" style="width: 50px; height: 50px; border-radius: 25px; background-image: url('/static/icons/robot.png'); background-size: contain; background-repeat: no-repeat; background-position: center;"></div>
+    </div>
+    <div id="chat-container" style="display: none;">
+        <button id="close-button" style="background-color: red; color: white;">X</button>
+        <div id="chat-window"></div>
+        <div id="input-area">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+    <script src="{{url_for('static', filename='chatbot.js')}}"></script>
+</body>
+<body>
 
     <div class="navbar">
-        <a href="Index.html">Home</a>
-        <a href="AboutUs.html">About Us</a>
-        <a href="Privacy.html">Privacy</a>
+        <a href="Index">Home</a>
+        <a href="AboutUs">About Us</a>
+        <a href="Privacy">Privacy</a>
+        {% if session['username'] %}
+            <!-- Show these links if the user is authenticated -->
+            <a href="uploads">My Uploads</a> <!-- Link to the uploads page -->
+            <div class="dropdown">
+                <button class="dropbtn"></button>
+                <div class="dropdown-content">
+                    <a href="api/logout">Log Out</a> <!-- Link to the logout route -->
+                </div>
+            </div>
+        {% else %}
+            <!-- Show this link if the user is not authenticated -->
+            <a href="login">Login</a>
+        {% endif %}
     </div>
 
     <div class="about-container"> <!-- Added a container for the about us section -->
