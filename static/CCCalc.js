@@ -16,12 +16,11 @@ function calculateCyclomaticComplexity(fileContent) {
         const matches = fileContent.match(pattern);
         complexity += matches ? matches.length : 0;
     });
-
-    return complexity;
-}
-
+    
 self.onmessage = function(event) {
     const fileContent = event.data;
     const complexity = calculateCyclomaticComplexity(fileContent);
     self.postMessage(complexity);
 };
+    return complexity;
+}

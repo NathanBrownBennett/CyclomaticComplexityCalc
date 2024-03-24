@@ -3,7 +3,7 @@
 // Assuming the presence of Web Worker scripts for O[N] complexity, line count, and cyclomatic complexity calculations
 const onWorker = new Worker('BigN.js');
 const lineCountWorker = new Worker('/static/LineCounter.js');
-const ccWorker = new Worker('/static/CCCalc.js');
+const ccWorker = new Worker('CCCalc.js');
 
 function calculateSuperMetrics(fileContent) {
   return new Promise((resolve) => {

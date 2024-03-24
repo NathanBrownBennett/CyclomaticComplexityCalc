@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <script src="{{url_for('static', filename='script.js')}}"></script>
-    
     <link rel="stylesheet" href="../static/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
@@ -13,41 +12,12 @@
     <!-- Link to the CSS file -->
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
 </head>
-
 <body>
-    <div id="chat-toggle" style="position: fixed; bottom: 20px; right: 20px; display: flex; align-items: center; border-radius: 25px; background-color: #4CAF50; padding: 10px; cursor: pointer;" onclick="toggleChat()">
-        <span style="margin-right: 10px; color: white; font-size: 16px;">Looking for assistance?</span>
-        <div id="toggle-chat-button" style="width: 50px; height: 50px; border-radius: 25px; background-image: url('/static/icons/robot.png'); background-size: contain; background-repeat: no-repeat; background-position: center;"></div>
+    <div class="navbar">
+        <a href="Index.html">Home</a>
+        <a href="AboutUs.html">About Us</a>
+        <a href="Privacy.html">Privacy</a>
     </div>
-    <div id="chat-container" style="display: none;">
-        <button id="close-button" style="background-color: red; color: white;">X</button>
-        <div id="chat-window"></div>
-        <div id="input-area">
-            <input type="text" id="user-input" placeholder="Type your message...">
-            <button id="send-button">Send</button>
-        </div>
-    </div>
-    <script src="{{url_for('static', filename='chatbot.js')}}"></script>
-</body>
-
-<div class="navbar">
-    <a href="Index">Home</a>
-    <a href="AboutUs">About Us</a>
-    <a href="Privacy">Privacy</a>
-    {% if session['username'] %}
-        <!-- Show these links if the user is authenticated -->
-        <a href="uploads">My Uploads</a> <!-- Link to the uploads page -->
-        <div class="dropdown">
-            <button class="dropbtn">     </button>
-            <div class="dropdown-content">
-                <a href="api/logout">Log Out</a> <!-- Link to the logout route -->
-            </div>
-        </div>
-    {% else %}
-        <!-- Show this link if the user is not authenticated -->
-        <a href="login">Login</a>
-    {% endif %}
-</div>
 
     <h1> Welcome to the CCSA Tool </h1>
     <p> This tool is designed to help you calculate the cyclomatic complexity of your code. </p>
@@ -57,26 +27,22 @@
         <div class="card" id="CCCalc">
             <img src="../static/CCCalc.webp" alt="CCcalc app image">
             <div class="card-title">CCcalc app</div>
-            <p>CCcalc is a tool that calculates the cyclomatic complexity of your code. Simply select your code file from the dropdown menu and the tool will do the rest.</p>
-            <!-- Dropdown menu for selecting a file -->
+            <p>CCcalc is a tool that calculates the cyclomatic complexity of your code. Simply upload your code file and the tool will do the rest.</p>
         </div>
         <div class="card" id="ONCalc">
             <img src="../static/Line Counter.webp" align="middle" alt="O[N] Calc app image" >
             <div class="card-title" >O[N] Calc app</div>
-            <p>O[N] Calc is a tool that calculates the time complexity of your code. Select your code file from the dropdown menu and the tool will provide an estimate of the time complexity.</p>
-            <!-- Dropdown menu for selecting a file -->
+            <p>O[N] Calc is a tool that calculates the time complexity of your code. Upload your code file and the tool will provide an estimate of the time complexity.</p>
         </div>
         <div class="card" id="LineCounter" >
             <img src="../static/O[N].webp" align="middle" alt="Line Counter App image" >
             <div class="card-title" >Line Counter App</div>
-            <p>Line Counter is a tool that counts the number of lines in your code. Select your code file from the dropdown menu and the tool will count the lines for you.</p>
-            <!-- Dropdown menu for selecting a file -->
+            <p>Line Counter is a tool that counts the number of lines in your code. Upload your code file and the tool will count the lines for you.</p>
         </div>
         <div class="card" id="SuperMetric" >
             <img src="../static/SuperMetric.webp" align="middle"alt="SuperMetric App image" >
             <div class="card-title" >SuperMetric App</div>
-            <p>SuperMetric is a tool that provides various metrics about your code. Select your code file from the dropdown menu and the tool will provide metrics such as cyclomatic complexity, line count, and time complexity.</p>
-            <!-- Dropdown menu for selecting a file -->
+            <p>SuperMetric is a tool that provides various metrics about your code. Upload your code file and the tool will provide metrics such as cyclomatic complexity, line count, and time complexity.</p>
         </div>
     </div>
     
@@ -85,35 +51,24 @@
 <div id="uploadOverlay" class="upload-overlay" style="display:none;">
     <div id="uploadForm" class="upload-form">
         <span class="close-button">&times;</span>
-        <h2>Select or Upload Your Script</h2>
-        <!-- Dropdown menu for selecting a file -->
-        <h3>Select an uploaded file:</h2>
-        <select id="fileSelect" name="fileSelect">
-            <option value="">Select a file</option>
-            {% for file in files %}
-            <option value="{{ file.id }}" data-source="{{ file.source }}">{{ file.title }}</option>
-            {% endfor %}
-        </select>
+        <h2>Upload Your Script</h2>
         <form id="fileUploadForm">
             <input type="hidden" id="analysisType" name="analysisType">
-            <h3>Select a new file:</h3>
-            <div style="display: flex; justify-content: center;">
-                <input type="file" id="fileUpload" name="fileUpload" accept=".py,.java,.c,.cpp,.cs">
-            </div>
+            <input type="file" id="fileUpload" name="fileUpload" accept=".py,.java,.c,.cpp,.cs">
             <button type="button">Upload</button>
         </form>
         <div id="progressBar" class="progress-bar">
             <div id="progressBarFill" class="progress-bar-fill" style="width: 0%;"></div>
         </div>
         <div id="ResultSection" style="display: none;">
-            <h3>Source Code</h3>
-            <textarea id="resultText" style="display:none;"></textarea>
-            <h3>Analysis Result</h3>
+        <iframe id="resultFrame" name="resultFrame" style="display:none;" width="100%" height="200"></iframe>
+        <textarea id="resultText" style="display:none;"></textarea>
+        <div id="AppResult" class="app-result-text" style="display:none;">
+            <label for="AppResultText">App Analysis Result</label>
             <textarea id="AppResultText" style="display:none;"></textarea>
         </div>
     </div>
 </div>
-
-
+</div>
 
 </html>
