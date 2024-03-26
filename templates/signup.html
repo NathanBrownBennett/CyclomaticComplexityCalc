@@ -29,20 +29,17 @@
         };
         
         function validatePassword(password) {
-        // Check length
-        if (password.length < 8 || password.length > 64) {
-            return "Password must be between 8 and 64 characters.";
-        }
+            if (password.length < 8 || password.length > 64) {
+                return "Password must be between 8 and 64 characters.";
+            }
 
-        // Check against prohibited password dictionary
-        var prohibitedPasswords = ["password", "12345678", "qwerty"];  // Add more prohibited passwords here
-        if (prohibitedPasswords.includes(password)) {
-            return "Password is too common.";
-        }
+            var prohibitedPasswords = ["password", "12345678", "qwerty"];
+            if (prohibitedPasswords.includes(password)) {
+                return "Password is too common.";
+            }
 
-        // If the password passed all checks, return null (no error)
-        return null;
-    }
+            return null;
+        }
 
     window.addEventListener('DOMContentLoaded', (event) => {
         document.getElementById('signup-form').addEventListener('submit', function(evt) {
@@ -88,8 +85,6 @@
 
     <div class="login-container">
         <h1>Sign Up</h1>
-
-        <!-- The action attribute points to the server endpoint for signup -->
         <form id="signup-form" action="/api/signup" method="POST">  
             <div class="input-group">
                 <label for="username">Username:</label>
@@ -99,10 +94,11 @@
             <div class="input-group">
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
-                <div id="password-error" class="error-message"></div>
+                {% if error %}
+                <div id="password-error" class="error-message">{{ error }}</div>
+                {% endif %}
             </div>
 
-            <!-- Captcha widget -->
             <div id="recaptcha-container"></div> 
 
             <button type="submit" id="signup-button" disabled>Sign Up</button>

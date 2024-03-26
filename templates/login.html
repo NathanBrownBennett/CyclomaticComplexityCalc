@@ -156,7 +156,9 @@
             <input type="text" id="digit-6" name="digit-6" maxlength="1" required class="verification-input">
             <button type="submit" class="verify-button">Verify</button>
         </form>
-        <div id="error-message" class="error-message"></div>
+        {% if error %}
+        <div id="password-error" class="error-message">{{ error }}</div>
+    {% endif %}
     </div>
 </div>
 

@@ -187,12 +187,25 @@ def otp_input():
 def login():
     username = request.json.get('username')
     password = request.json.get('password')
-    if validate_password(username, password):
-        session['username'] = username
-        session['verified'] = False
-        return render_template('otp_input.html')
-    else:
+    recaptcha_token = request.json.get('g-recaptcha-response')
+
+    url = 'https://www.google.com/recaptcha/api/siteverify'
+    payload = {
+        'secret': '6LeATaIpAAAAAJA2TUHj5TC5acBcfUzn8iMDT1yF',
+        'response': recaptcha_token
+    }
+    response = requests.post(url, data=payload) 
+    result = response.json()
+
+    if result['success']:
+        if validate_password(username, password):
+            session['username'] = username
+            session['verified'] = False
+            return render_template('otp_input.html')
+        
         return render_template('login.html', error="Invalid username or password.")
+    
+    return render_template('login.html', error="Invalid reCAPTCHA")
 
 @app.route('/api/logout', methods=['POST', 'GET'])
 def logout():
